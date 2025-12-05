@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="text-center my-4">Your Orders</h2>
+<table class="table table-bordered text-center">
+
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>Status</th>
+            <th>Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.PRODUCT.name }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.total_price }}</td>
+            <td>{{ order.status }}</td>
+            <td>
+                {{ order.ADDRESS.full_name }}<br>
+                {{ order.ADDRESS.phone }}<br>
+                {{ order.ADDRESS.address }}, {{ order.ADDRESS.city }}, {{ order.ADDRESS.state }} - {{ order.ADDRESS.pincode }}<br>
+                Landmark: {{ order.ADDRESS.landmark }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+{% endblock %}

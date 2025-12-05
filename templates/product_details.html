@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+@media (min-width: 768px) { /* Bootstrap's md breakpoint */
+    .sticky-md-top {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 110px; /* Adjust this value based on your navbar's height */
+        z-index: 1020; /* Ensures it stays on top */
+    }
+}
+
+/* Image zoom (follow cursor) */
+.zoom-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: .5rem;
+}
+.zoom-container .zoom-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform .28s ease;
+    transform-origin: 50% 50%;
+    cursor: zoom-in;
+    will-change: transform;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+.zoom-container:hover .zoom-image {
+    transform: scale(2);
+    cursor: zoom-out;
+}
+
+/* make sure rounded corners remain when image scales */
+.zoom-container .zoom-image.rounded {
+    border-radius: .5rem;
+}
+
+/* responsive tweak so zoom isn't too strong on very small screens */
+@media (max-width: 576px) {
+    .zoom-container:hover .zoom-image {
+        transform: scale(2);
+    }
+}
+</style>
+<div class="container p-3" style="margin-top: 90px;">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="sticky-md-top">
+                <div class="zoom-container">
+                    <img src="{{ product.image.url }}" class="img-fluid rounded zoom-image" alt="{{ product.name }}">
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="text-light p-3">
+                <h5>Abros</h5>
+                <h3>{{ product.name }}</h3>
+
+                <div class="mt-2 d-flex align-items-center">
+                    <h4 class="mb-0">₹{{ product.price }}</h4>
+                    <p class="mb-0 ms-3"><del>₹1,999</del></p>
+                    <p class="mb-0 ms-3 text-success">2% off</p>
+                </div>
+
+                <div class="mt-4">
+                    <h6>Available offers</h6>
+                    <ul>
+                        <li>Bank Offer: 100% Cashback up to 500Rs on Axis Bank SuperMoney Rupay CC UPI transactions on super.money UPI T&C</li>
+                    </ul>
+                </div>
+
+                <div class="mt-4">
+                    <h5>Product Details</h5>
+                    <ul class="list-unstyled">
+                        <li><strong>Color:</strong> Black</li>
+                        <li><strong>Outer material:</strong> Mesh</li>
+                        <li><strong>Model name:</strong> SYLVAIN</li>
+                        <li><strong>Ideal for:</strong> Men</li>
+                        <li><strong>Occasion:</strong> Sports</li>
+                        <li><strong>Heel Pattern:</strong> Textured</li>
+                        <li><strong>Type For Sports:</strong> Running Shoes</li>
+                        <li><strong>Net Quantity:</strong> 1</li>
+                    </ul>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <a href="{% url 'add_cart' product.id %}" class="btn btn-success w-100"><i class="fa fa-shopping-cart"></i> ADD TO CART</a>
+                    </div>
+                    <div class="col-6">
+                        {# Assuming a 'buy_now' URL, otherwise this can be a button that triggers JS #}
+                        <a href="{% url 'purchase_product' product.id %}" class="btn btn-primary w-100"><i class="fa fa-bolt"></i> BUY NOW</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add script to update transform-origin based on cursor position -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const container = document.querySelector('.zoom-container');
+  if (!container) return;
+  const img = container.querySelector('.zoom-image');
+
+  function setOrigin(clientX, clientY) {
+    const rect = container.getBoundingClientRect();
+    const x = ((clientX - rect.left) / rect.width) * 100;
+    const y = ((clientY - rect.top) / rect.height) * 100;
+    // clamp values 0..100
+    const cx = Math.max(0, Math.min(100, x));
+    const cy = Math.max(0, Math.min(100, y));
+    img.style.transformOrigin = cx + '% ' + cy + '%';
+  }
+
+  container.addEventListener('mousemove', function (e) {
+    setOrigin(e.clientX, e.clientY);
+  });
+
+  // support touch move for mobile
+  container.addEventListener('touchmove', function (e) {
+    if (!e.touches || !e.touches[0]) return;
+    setOrigin(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+
+  container.addEventListener('mouseleave', function () {
+    img.style.transformOrigin = '50% 50%';
+  });
+});
+</script>
+{% endblock %}

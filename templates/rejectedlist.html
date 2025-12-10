@@ -1,0 +1,36 @@
+{% extends 'admin.html' %}
+{% block content%}
+<table class="table table-bordered text-center">
+
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>UserName(status)</th>
+            <th>Address</th>
+            <th>Approve/Reject</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.PRODUCT.name }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.total_price }}</td>
+            <td>{{ order.ADDRESS.User.username }}<br>({{ order.status}})</td>
+            <td>
+                {{ order.ADDRESS.full_name }}<br>
+                {{ order.ADDRESS.phone }}<br>
+                {{ order.ADDRESS.address }}, {{ order.ADDRESS.city }}, {{ order.ADDRESS.state }} - {{ order.ADDRESS.pincode }}<br>
+                Landmark: {{ order.ADDRESS.landmark }}
+            </td>
+            <td><a href="{%url 'orderapprove' order.id %}">Approve</a> /<a> Reject</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+{% endblock %}

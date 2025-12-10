@@ -4,7 +4,7 @@ from accounts.models import Address
 # Create your views here.
 def home(request):
     
-    products = Product.objects.all()
+    products = Product.objects.all()[:5]
     return render(request,'index.html', {'products': products,})
 
 def all_products(request):
@@ -58,3 +58,6 @@ def my_orders(request):
         return render(request, 'orders.html',{'orders': orders})
     else:
         return redirect('home')
+    
+def product_search(request):
+    pass

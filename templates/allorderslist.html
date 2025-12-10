@@ -1,0 +1,36 @@
+{% extends 'admin.html' %}
+{% block content%}
+<table class="table table-bordered text-center">
+
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>UserName(status)</th>
+            <th>Address</th>
+            <th>update</th>
+        </tr>
+    </thead>
+    <tbody >
+        {% for order in orders %}
+        <tr>
+            <td {%if order.status == 'rejected' %} style="background-color:red; color:white"{%endif%}>{{ order.id }}</td>
+            <td {%if order.status == 'rejected' %} style="background-color:red; color:white"{%endif%}>{{ order.PRODUCT.name }}</td>
+            <td {%if order.status == 'rejected' %} style="background-color:red; color:white"{%endif%}>{{ order.quantity }}</td>
+            <td {%if order.status == 'rejected' %} style="background-color:red; color:white"{%endif%}>{{ order.total_price }}</td>
+            <td {%if order.status == 'rejected' %} style="background-color:red; color:white"{%endif%}>{{ order.ADDRESS.User.username }}<br>({{ order.status}})</td>
+            <td {%if order.status == 'rejected' %} style="background-color:red; color:white"{%endif%}>
+                {{ order.ADDRESS.full_name }}<br>
+                {{ order.ADDRESS.phone }}<br>
+                {{ order.ADDRESS.address }}, {{ order.ADDRESS.city }}, {{ order.ADDRESS.state }} - {{ order.ADDRESS.pincode }}<br>
+                Landmark: {{ order.ADDRESS.landmark }}
+            </td >
+            <td {%if order.status == 'rejected' %} style="background-color:red; color:white"{%endif%}> <a href="{% url 'updatestatus' order.id %}">Update status</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'admin.html' %}
+{% block content %}
+<form action='' method='post'  >
+    {% csrf_token %}
+<select id="orders status" name="orders_status">
+<option value="shping started">shping started</option>
+<option value="packing Proccess">packing Proccess</option>
+<option value="Deliverd">Deliverd</option>
+<option value="Delivery in today">Delivery in today</option>
+<option value="Return Successfull">Return Successfull</option>
+</select>
+<input type='submit'>
+
+</from>
+{% endblock %}

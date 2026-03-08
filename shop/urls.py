@@ -20,6 +20,12 @@ urlpatterns = [
     path('rejectedlist/',admin.rejectedlist,name='rejectedlist'),
     path('deliverdproduct/',admin.delivedproduct,name='deliverdproduct'),
     path('updatestatus/<int:purchase_id>/',admin.updatestatus,name='updatestatus'),
+    path('search/',views.product_search,name='search'),
+    path('listproduct/',admin.listproduct,name='listproduct'),
+    path('productadd/',admin.addproduct,name='productadd'),
+    path('editproduct/<int:product_id>/',admin.editproduct,name='editproduct'),
+    path('removeproduct/<int:product_id>/',admin.removeproduct,name='removeproduct'),
+
 
     
 

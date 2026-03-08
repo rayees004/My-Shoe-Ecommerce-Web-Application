@@ -25,14 +25,9 @@ def login(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            if username == "admin@123" and password == "12345":
-                account_login(request,user)
-                messages.success(request, f"New account created:{username}")
-                return redirect('adminhome')
-            else:
-                account_login(request,user)
-                messages.success(request, f"New account created: {username}")
-                return redirect('home')
+            account_login(request,user)
+            messages.success(request, f"New account created: {username}")
+            return redirect('home')
         else:
             messages.error(request, "Invalid username or password")
     return redirect('home')

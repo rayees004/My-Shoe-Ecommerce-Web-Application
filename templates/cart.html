@@ -8,6 +8,7 @@
 
     <div class="card p-2 "style="background-color: rgba(47,48,51,0.91) ">
       <div class="p-3 ">
+        {% if cart_items %}
         {% for i in cart_items %}
          <div class=" shadow row mt-1 text-bg-dark">
             
@@ -46,6 +47,7 @@
 
 
         </div>{% endfor%}
+        {% endif %}
           
           <div class="">
     

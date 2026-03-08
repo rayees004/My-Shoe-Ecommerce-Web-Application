@@ -1,15 +1,23 @@
 from django.shortcuts import redirect, render
 from .models import Product, Product_Purchase
 from accounts.models import Address
+from django.core.paginator import Paginator
 # Create your views here.
 def home(request):
-    
+    if request.user.is_authenticated:
+        user=request.user
+        if user.username == 'admin@123':    
+            return redirect('adminhome')
+        
     products = Product.objects.all()[:5]
     return render(request,'index.html', {'products': products,})
 
 def all_products(request):
     products = Product.objects.all()
-    return render(request,'all_products.html', {'products': products, 'user':request.user})
+    paginator = Paginator(products, 3) 
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(request,'all_products.html', {'page_obj': page_obj,})
 def product_details(request, product_id):
     product = Product.objects.get(id=product_id)
     return render(request, 'product_details.html', {'product': product, 'user':request.user})
@@ -60,4 +68,7 @@ def my_orders(request):
         return redirect('home')
     
 def product_search(request):
-    pass
+    query = request.GET.get('q')
+    products = Product.objects.filter(name__icontains=query)
+    return render(request,'all_products.html', {'products': products, 'user':request.user})
+    

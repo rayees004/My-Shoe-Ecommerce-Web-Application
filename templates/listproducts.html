@@ -1,8 +1,10 @@
 
-{% extends "base.html" %}
+{% extends "admin.html" %}
 
  {% block content %}
  {% load static%}
+
+
 
   <section id="latest-products" class="product-store py-2 my-2 py-md-5 my-md-5 pt-0">
     <div class="container-md">
@@ -15,7 +17,7 @@
       <div class="product-content padding-small">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
           
-          {% for i in page_obj %}
+          {% for i in products%}
            <div class="col mb-4 mb-3">
              <div class="product-card position-relative">
               <div class="card-img">
@@ -27,7 +29,7 @@
                         <use xlink:href="#shopping-carriage"></use>
                       </svg>
                     </button>
-                    <a href="{% url 'product_details' i.id %}" >
+                    <a href="{% url 'editproduct' i.id %}" >
                     <button type="button" class="btn btn-light" >
                       <svg class="quick-view">
                         <use xlink:href="#quick-view"></use>
@@ -49,38 +51,6 @@
       </div>
     </div>
   </section>
-
-  <div class="pagination d-flex justify-content-center">
-    <span class="step-links ">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-warning">previous</a>
-        {% endif %}
-
-        <span class="current btn btn-secondary">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-warning">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
-<div class="pagination d-flex justify-content-center">
-    <span class="step-links ">
-        
-            {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                    <span class="current btn btn-secondary">{{ num }}</span>
-                {% else %}
-                    <a href="?page={{ num }}" class="btn btn-light">{{ num }}</a>
-                {% endif %}
-            {% endfor %}
-
-        
-    </span>
-</div>
 
  
   <script src="{% static 'js/jquery-1.11.0.min.js' %}"></script>

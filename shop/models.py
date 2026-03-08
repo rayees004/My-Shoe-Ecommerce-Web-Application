@@ -17,3 +17,4 @@ class Product_Purchase(models.Model):
     quantity = models.IntegerField(default=1)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=50, default='Pending')
+    payment_status = models.CharField(max_length=50, default='Pending')

@@ -4,16 +4,30 @@ from cart.models import Cart, CartItem
 from shop.models import Product
 
 # Create your views here.
-def cart_details(request):
-    cart = Cart.objects.get(cart_id=c_id(request))
-    cart_items = CartItem.objects.filter(CART=cart)
-    return render(request,'cart.html',{'cart_items': cart_items})
 
 def c_id(request):
-    cart = request.session.session_key
-    if not cart:
-        cart = request.session.create()
+    if request.user:
+        user=request.user
+        cart = user.id
+    else:
+        cart = request.session.session_key
+        if not cart:
+            cart = request.session.create()
     return cart
+
+
+def cart_details(request):
+
+    cart = Cart.objects.get(cart_id=c_id(request))
+    try:
+        cart_items = CartItem.objects.filter(CART=cart)
+    except:
+        cart_items=None
+    if cart_items==None :
+        return redirect('home')
+    return render(request,'cart.html',{'cart_items': cart_items})
+
+
 
 def add_cart(request,product_id):
     product = Product.objects.get(id=product_id)

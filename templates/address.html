@@ -3,14 +3,70 @@
 <h2 class="text-center my-4">Address Details</h2>
 <form method="post" action="">
     {% csrf_token %}
-    <input type='text' name="full_name" placeholder = 'Full Name'><br>
-    <input type='text' name="phone" placeholder = 'Phone Number'><br>
-    <input type='text' name="pincode" placeholder = 'Pincode'><br>
-    <input type='text' name="locality" placeholder = "Locality"><br>
-    <input type='text' name="address" placeholder = "Address"><br>
-    <input type='text' name="city" placeholder = "City"><br>
-    <input type='text' name="state" placeholder = "State"><br>
-    <input type='text' name="landmark" placeholder = "Landmark"><br>
-    <input type='submit' value="Submit"><br>
+    <input type='text' name="full_name" placeholder = 'Full Name' value="{{ address.full_name}}"><br>
+    <input type='text' name="phone" placeholder = 'Phone Number' value="{{ address.phone }}"><br>
+    <input type='text' name="pincode" placeholder = 'Pincode' value="{{ address.pincode }}"><br>
+    <input type='text' name="locality" placeholder = "Locality" value="{{ address.locality }}"><br>
+    <input type='text' name="address" placeholder = "Address" value="{{ address.address }}"><br>
+    <input type='text' name="city" placeholder = "City" value="{{ address.city }}"><br>
+    <input type='text' name="state" placeholder = "State" value="{{ address.state }}"><br>
+    <input type='text' name="landmark" placeholder = "Landmark" value="{{ address.landmark }}"><br>
+    <input type="radio" name="paymenttype" value="cash" id="typepay1"> Cash on Delivery<br>
+    <input type="radio" name="paymenttype" value="online" onchange="payment" id="typepay"> Online Payment<br>
+    <div id="paybutton"></div>
 </form>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script> 
+ 
+
+<script>
+document.getElementById('typepay').addEventListener('change', ()=>{
+    var paybutton = document.getElementById('paybutton');
+    var typepay = document.getElementById('typepay');
+    if(typepay.checked){
+        paybutton.innerHTML = '<button type="button"  class="btn btn-primary" id="pay-btn" onclick="payment(event)">Pay Now</button>';
+    }else{
+        paybutton.innerHTML = '';
+    }
+});
+document.getElementById('typepay1').addEventListener('change', ()=>{
+    var paybutton = document.getElementById('paybutton');
+    var typepay1 = document.getElementById('typepay1');
+    if(typepay1.checked){
+        paybutton.innerHTML = "<input type='submit' value='Submit'><br>";
+    }
+});
+
+var options = { 
+    "key": "{{ razorpay_key_id }}", 
+    "amount": "100", 
+    "currency": "INR", 
+    "order_id": "{{ order_id }}", 
+ 
+    "handler": function (response){ 
+ 
+        fetch("/paymenthandler/", { 
+            method: "POST", 
+            headers: { 
+                "Content-Type": "application/json" 
+            }, 
+            body: JSON.stringify(response) 
+        }) 
+    } 
+}; 
+ 
+var rzp = new Razorpay(options); 
+ 
+
+
+function payment(e){
+    rzp.open(); 
+    e.preventDefault(); 
+
+}
+
+
+
+</script>
+
+
 {% endblock %}

@@ -3,7 +3,7 @@ from .models import Product, Product_Purchase
 from accounts.models import Address
 from django.core.paginator import Paginator
 
-import razorpay
+
 # Create your views here.
 def home(request):
     if request.user.is_authenticated:
@@ -28,24 +28,7 @@ def purchase_product(request,product_id):
     product = Product.objects.get(id=product_id)
     address = Address.objects.filter(User=request.user).first()
 
-    client = razorpay.Client("KoKmJnZfhm03QpVPJ8OlK4z7")
-
-    amount = 50  # 500 INR (amount must be in paise) 
- 
-    order = client.order.create({ 
-        "amount": amount, 
-        "currency": "INR", 
-        "payment_capture": 1 
-    }) 
- 
     
- 
-    context = { 
-        "order_id": order["id"], 
-        "razorpay_key": "rzp_test_SPCDyQKPrm0CC1", 
-        "amount": amount 
-    } 
- 
 
     if address is None:
         address = None

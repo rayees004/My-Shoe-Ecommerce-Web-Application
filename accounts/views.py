@@ -10,10 +10,13 @@ def register(request):
         email = request.POST['email']
         password = request.POST['password']
         conform_password = request.POST['conform_password']
+        if User.objects.filter(username=username).exists():
+            return render(request,'register.html',{'userexists':True})
         if password == conform_password:
-            user = User.objects.create_user(username=username, email=email, password=password)
-            user.save()
-            return redirect('home')
+            request.session['username'] = username
+            request.session['email'] = email
+            request.session['password'] = password
+            return render(request,'registerotp.html')
         else:
             return render(request,'register.html',{'passmatch':False})
     return render(request,'register.html')

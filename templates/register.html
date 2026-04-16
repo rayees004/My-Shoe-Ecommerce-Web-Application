@@ -1,13 +1,128 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %}
 
-{% block content %}
-        <form method= "post" action="{% url 'register' %}">
-            {% csrf_token %}
-            <input type="text" name="username" placeholder="Username" required><br>
-            <input type="email" name="email" placeholder="Email" required><br>
-            <input type="password" name="password" placeholder="Password" required><br>
-            <input type="password" name="conform_password" placeholder="Confirm Password" required><br>
-            <input type="submit" value="Register">
-        </form>
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 400px;
+    margin-top: 10px;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 10px;
+  }
+  .input-field {
+    outline: none;
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    width: 100%;
+    border: 2px solid black;
+    border-radius: 20px;
+  }
+  .input-label {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    transition: 0.2s ease;
+    font-size: 1rem;
+    color: gray;
+  }
+  .input-field:focus,
+  input:valid {
+    color: rgb(0, 0, 0);
+  }
+
+  .input-field:focus + .input-label,
+  input:valid + .input-label {
+    color: rgb(6, 70, 7);
+    height: 30px;
+    line-height: 15px;
+    transform: translate(-1px, -25px) scale(0.9);
+    background-color: rgb(255, 255, 255);
+    outline: none;
+    padding: 0px 5px;
+    justify-content: center;
     
-    {% endblock %}
+  }
+  .each-inputs {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .register {
+    min-width: 150px;
+    background-color: greenyellow;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid rgb(253, 253, 253);
+    outline: none;
+    margin-left: 70px;
+  }
+  .register:hover{
+    background-color: green;
+    color:white;
+    box-shadow: 0px 0px 20px 2px black ;
+    
+    
+  }
+  input:focus{
+    border-color: greenyellow;
+  }
+</style>
+
+<div class="container">
+  <h3>Create Account</h3>
+  <form method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+    <div class="input-group">
+      <div class="each-inputs">
+        <input
+          class="input-field"
+          type="text"
+          name="username"
+          placeholder=""
+          required
+        /><label for="name" class="input-label">username</label><br />
+      </div>
+      <div class="each-inputs">
+        <input
+          class="input-field"
+          type="email"
+          name="email"
+          placeholder=""
+          required
+        /><label for="" class="input-label">email</label><br />
+      </div>
+      <div class="each-inputs">
+        <input
+          class="input-field"
+          type="password"
+          name="password"
+          placeholder=""
+          required
+        /><label for="" class="input-label">Password</label><br />
+      </div>
+      <div class="each-inputs">
+        <input
+          class="input-field"
+          type="password"
+          name="conform_password"
+          placeholder=""
+          required
+        /><label for="" class="input-label">Confirm Password</label><br />
+      </div>
+
+      
+    </div>
+    <input class="register" type="submit" value="Register" />
+  </form>
+</div>
+
+{% endblock %}

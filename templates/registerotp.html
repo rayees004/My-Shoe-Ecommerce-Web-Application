@@ -1,0 +1,133 @@
+{% extends 'base.html'%} {%block content %}
+<style>
+    .main{
+        width: 100vw;
+        height: 80vh;
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+    }
+  .container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 500px;
+    margin: auto;
+    border: 1px solid;
+    padding: 50px;
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 200px 5px;
+  }
+  .input-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    margin: auto;
+  }
+  .input-field {
+    max-width: 50px;
+    max-height: 50px;
+    padding-left: 15px;
+    font-size: 27px;
+    outline: none;
+    border: 2px solid black;
+    margin: auto;
+  }
+  .input-field:focus {
+    border: 2px solid greenyellow;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .heading {
+    height: 70px;
+    text-align: center;
+  }
+  .resend {
+    width: 100px;
+    height: 40px;
+    margin-top: 20px;
+    margin-left: 15px;
+    background-color: gray;
+    border-radius: 10px;
+    color: white;
+    border: 1px solid black;
+    
+  }
+  .resend:hover{
+    background-color: rgb(44, 44, 44);
+    color: rgb(255, 255, 255);
+  }
+  .resendsection {
+    display: flex;
+  }
+  .time {
+    margin-top: 20px;
+    font-size: 20px;
+    margin-left: 200px;
+    border: 1px solid black;
+    padding: 5px 15px 0px 15px;
+    border-radius: 10px;
+    height: 40px;
+  }
+  .verification-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  .verifybutton {
+    width: 100px;
+    height: 40px;
+    background-color: greenyellow;
+    border-radius: 10px;
+    border: 1px solid black;
+  }
+  .verifybutton:hover{
+    background-color: rgb(0, 255, 21);
+  }
+</style>
+<div class="main">
+  <div class="container">
+    <h3 class="heading">Otp Verification</h3>
+    <div class="input-group">
+      <input maxlength="1" type="number" name="" id="" class="input-field" />
+      <input maxlength="1" type="number" name="" id="" class="input-field" />
+      <input maxlength="1" type="number" name="" id="" class="input-field" />
+
+      <input maxlength="1" type="number" name="" id="" class="input-field" />
+      <input maxlength="1" type="number" name="" id="" class="input-field" />
+      <input maxlength="1" type="number" name="" id="" class="input-field" />
+    </div>
+    <div class="resendsection">
+      <button class="resend">resend</button>
+      <p class="time">1:00</p>
+    </div>
+    <div class="verification-section">
+      <button class="verifybutton">verify</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const inputs = document.querySelectorAll(".input-field");
+  inputs.forEach((input, index) => {
+    input.addEventListener("input", (e) => {
+      if (e.target.value.length === 1) {
+        if (index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+      }
+    });
+    input.addEventListener("keydown", (e) => {
+      if (e.key == "Backspace" && input.value === "") {
+        inputs[index - 1].focus();
+      }
+    });
+  });
+</script>
+{% endblock %}

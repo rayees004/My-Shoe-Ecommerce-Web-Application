@@ -85,4 +85,4 @@ def product_search(request):
     query = request.GET.get('q')
     products = Product.objects.filter(name__icontains=query)
     return render(request,'all_products.html', {'products': products, 'user':request.user})
-    
+

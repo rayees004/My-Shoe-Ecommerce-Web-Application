@@ -31,7 +31,7 @@
   .input-field {
     max-width: 50px;
     max-height: 50px;
-    padding-left: 15px;
+    text-align:center;
     font-size: 27px;
     outline: none;
     border: 2px solid black;
@@ -100,20 +100,25 @@
   <div class="container">
     <h3 class="heading">Otp Verification</h3>
     <div class="input-group">
-      <input maxlength="1" type="number" name="" id="" class="input-field" required/>
-      <input maxlength="1" type="number" name="" id="" class="input-field" required/>
-      <input maxlength="1" type="number" name="" id="" class="input-field" required/>
+      <input maxlength="1" type="number" name="" id="" class="input-field " required/>
+      <input maxlength="1" type="number" name="" id="" class="input-field " required/>
+      <input maxlength="1" type="number" name="" id="" class="input-field " required/>
 
       <input maxlength="1" type="number" name="" id="" class="input-field" required/>
       <input maxlength="1" type="number" name="" id="" class="input-field" required/>
-      <input maxlength="1" type="number" name="" id="" class="input-field" required/>
+      <input maxlength="1" type="number" name="" id="last-field" class="input-field" required/>
     </div>
     <div class="resendsection">
       <button class="resend" style="display:none">resend</button>
       <p class="time" id="timer">0:59</p>
     </div>
     <div class="verification-section">
-      <button class="verifybutton">verify</button>
+      <form action="/verify_otp/" method="post">
+        {% csrf_token %}
+        <input type="text" hidden  name="otp" id="otp" required>
+        <button class="verifybutton">verify</button>
+      </form>
+     
       
     </div>
   </div>
@@ -121,6 +126,20 @@
 
 
 <script>
+document.getElementById("last-field").addEventListener("input",()=>{
+  const otp = document.getElementById("otp");
+  const inputFields = document.querySelectorAll(".input-field");
+  let otpValue = "";
+  inputFields.forEach((input)=>{
+    otpValue += input.value;
+  
+  })
+  otp.value = otpValue;
+  document.querySelectorAll(".input-field").style = "input:disabled";})
+  
+
+  
+
   const timer = document.getElementById("timer");
 let timeleft = 60;
 const countdown = setInterval(() => {
@@ -156,8 +175,14 @@ const countdown = setInterval(() => {
 
   const inputs = document.querySelectorAll(".input-field");
   inputs.forEach((input, index) => {
+    
+   
     input.addEventListener("input", (e) => {
       if (e.target.value.length === 1) {
+        if (index === inputs.length - 1) {
+          
+        }
+        
         if (index < inputs.length - 1) {
           inputs[index + 1].focus();
         }
@@ -169,6 +194,8 @@ const countdown = setInterval(() => {
       }
     });
   });
+  
+  
 
   
 </script>

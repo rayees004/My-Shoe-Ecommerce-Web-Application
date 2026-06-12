@@ -360,6 +360,7 @@
                   <input type="text" name="username" placeholder="Username or Email Address *"
                     class="mb-3 ps-3 text-input">
                   <input type="password" name="password" placeholder="Password" class="ps-3 text-input">
+                  <p class="text-danger">{{login_error}}</p>
                   <div class="checkbox d-flex justify-content-between mt-4">
                     <p class="checkbox-form">
                       <label class="">
@@ -388,7 +389,7 @@
   <header id="header" class="site-header text-black">
     <nav id="header-nav" class="navbar navbar-expand-lg">
       <div class="container-lg">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="/">
           <img src="{% static 'images/main-logo.png' %}" class="logo" alt="logo">
         </a>
         <button class="navbar-toggler d-flex d-lg-none order-3 border-0 p-1 ms-2" type="button" data-bs-toggle="offcanvas"
@@ -432,6 +433,7 @@
         </div>
         <div class="user-items ps-0 ps-md-5">
           <ul class="d-flex justify-content-end list-unstyled align-item-center m-0">
+            {%if not user.is_authenticated %}
             <li class="pe-3">
               <a href="login" data-bs-toggle="modal" data-bs-target="#modallogin" class="border-0">
                 <svg class="user" width="24" height="24">
@@ -439,6 +441,7 @@
                 </svg>
               </a>
             </li>
+            {% endif %}
             <li class="pe-3">
               <a href="{% url 'cart_details' %}"   class="border-0">
                 <svg class="shopping-cart" width="24" height="24">
@@ -460,6 +463,17 @@
   </header>
   {% block content %}
   {% endblock %}
+  {%if login_error %}
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var loginModal = new bootstrap.Modal(
+        document.getElementById('modallogin')
+    );
+    loginModal.show();
+});
+</script>
+{% endif %}
+ 
 <script src="{% static 'js/jquery-1.11.0.min.js' %}"></script>
   <script src="{% static 'js/plugins.js' %}"></script>
   <script src="{% static 'js/script.js' %}"></script>

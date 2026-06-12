@@ -6,13 +6,16 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 def home(request):
+    try:
+        login_error = request.session["loginerror"]
+    except:
+        login_error = ""
     if request.user.is_authenticated:
         user=request.user
         if user.username == 'admin@123':    
             return redirect('adminhome')
-        
     products = Product.objects.all()[:5]
-    return render(request,'index.html', {'products': products,})
+    return render(request,'index.html', {'products': products,'login_error':login_error})
 
 def all_products(request):
     products = Product.objects.all()

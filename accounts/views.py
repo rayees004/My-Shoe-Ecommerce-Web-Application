@@ -8,16 +8,40 @@ from rest_framework import status
 from .serializers import ResendOtpSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+import random
 # Create your views here.
-@api_view(['POST'])
-def resend_otp(request):
+
+from django.core.mail import send_mail
+
+def send_otp_email(email, otp):
+    send_mail(
+        subject='Your OTP Code',
+        message=f'Your OTP is {otp}',
+        from_email='mrc53445@gmail.com',
+        recipient_list=[email],
+        fail_silently=False,
+    )
+
+
+ 
+def verify_otp(request):
     if request.method == 'POST':
-        serializer = ResendOtpSerializer(data=request.POST)
-        session_id = request.POST.get('session_id')
-        # Implement logic to resend OTP using the session_id
-        # For example, you can generate a new OTP and send it to the user's email or phone number
-        # You can also return a response indicating that the OTP has been resent successfully
-        return Response("resend otp success",status=status.HTTP_200_OK)  # Redirect to the OTP verification page after resending the OTP
+       user_otp = request.POST['otp']
+       try:
+            otp = request.session['otp']
+       except:
+           otp = ""
+           redirect('register')
+       print("saved otp",(otp))
+       print("user sended otp",(user_otp))
+       if str(otp) == user_otp:
+           username = request.session['username']
+           email = request.session['email']
+           password = request.session['password']
+           User.objects.create_user(username=username,email=email,password=password)
+           return redirect("home")
+    return render(request,'verify_otp.html')
+    
 
 def register(request):
     if request.method == 'POST':
@@ -31,7 +55,13 @@ def register(request):
             request.session['username'] = username
             request.session['email'] = email
             request.session['password'] = password
-            return render(request,'registerotp.html',{'session_id':request.session.session_key})
+           
+            # otp generation
+            otp = random.randint(100000,999999)
+            request.session['otp'] = otp
+            send_otp_email(email,otp)
+
+            return redirect('verify_otp')
         else:
             return render(request,'register.html',{'passmatch':False})
     return render(request,'register.html')
@@ -44,8 +74,10 @@ def login(request):
 
         if user is not None:
             account_login(request,user)
-            messages.success(request, f"New account created: {username}")
+            request.session['loginerror'] = ""
             return redirect('home')
         else:
-            messages.error(request, "Invalid username or password")
+            request.session['loginerror'] = "username or password desnot match"
+        
     return redirect('home')
+    # return render(request,"login.html")
